@@ -11,6 +11,49 @@
     />
   </head>
   <body>
+    <section
+      class="performance-summary"
+      style="
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        margin-bottom: 20px;
+      "
+    >
+      <h2>Project Brief</h2>
+      <p>
+        This project implements a Deep Learning-based Fingerprint Restoration
+        system designed to reconstruct corrupted fingerprint images. Using a
+        U-Net architecture, the model effectively removes Gaussian noise and
+        fills in missing data—simulating real-world scenarios where fingerprints
+        are smudged, incomplete, or grainy. <br />
+        <br />
+        The system works through an Encoder-Decoder process: it first extracts
+        high-level structural features from noisy inputs, then utilizes skip
+        connections to preserve fine ridge details during reconstruction.
+        Trained via a custom data generator that injects synthetic noise and
+        occlusions, the model learns to map degraded images back to their
+        original, clean ridge patterns with high fidelity.
+      </p>
+
+      <!-- <div
+        class="metrics-dashboard"
+        style="display: flex; gap: 20px; margin-top: 15px"
+      >
+        <div class="metric-box">
+          <span class="metric-label">Avg. PSNR Improvement</span>
+          <span class="metric-value">+12.4 dB</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Model Latency</span>
+          <span class="metric-value">~45ms</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">SSIM Recovery</span>
+          <span class="metric-value">0.92</span>
+        </div>
+      </div> -->
+    </section>
     <div class="glass-container">
       <header>
         <h1><span class="accent">AI DENOISE</span></h1>
@@ -35,42 +78,6 @@
         </button>
       </section>
     </div>
-    <section
-      class="performance-summary"
-      style="
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        margin-bottom: 20px;
-      "
-    >
-      <h2>Project Brief</h2>
-      <p>
-        This system uses a lightweight <strong>TFLite CNN model</strong> to
-        restore ridge continuity in corrupted fingerprints. By removing Gaussian
-        noise and repairing missing "thick grains" (occlusions), it enables
-        standard matching algorithms to function even on poor-quality latent
-        prints.
-      </p>
-
-      <div
-        class="metrics-dashboard"
-        style="display: flex; gap: 20px; margin-top: 15px"
-      >
-        <div class="metric-box">
-          <span class="metric-label">Avg. PSNR Improvement</span>
-          <span class="metric-value">+12.4 dB</span>
-        </div>
-        <div class="metric-box">
-          <span class="metric-label">Model Latency</span>
-          <span class="metric-value">~45ms</span>
-        </div>
-        <div class="metric-box">
-          <span class="metric-label">SSIM Recovery</span>
-          <span class="metric-value">0.92</span>
-        </div>
-      </div>
-    </section>
     <div>
       <section class="results-grid" id="resultsGrid" style="display: none">
         <div class="result-card">
