@@ -12,16 +12,13 @@ import requests
 from pathlib import Path
 from contextlib import asynccontextmanager
 import gc
-# Use tflite_runtime instead of full tensorflow to save ~400MB RAM
 import tflite_runtime.interpreter as tflite
 
-# --- PATHS & CONFIG ---
 ROOT_DIR = Path(__file__).parent.parent
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(CURRENT_DIR, "model.tflite")
-DRIVE_ID = "179XRJXXPYi72f2Za8rO74n_mqIkgRCYE" # <--- UPDATE THIS
+DRIVE_ID = "179XRJXXPYi72f2Za8rO74n_mqIkgRCYE"
 
-# Global TFLite variables
 interpreter = None
 input_details = None
 output_details = None
@@ -34,7 +31,6 @@ async def lifespan(app: FastAPI):
         print("Downloading TFLite model...")
         download_large_file_from_drive(DRIVE_ID, MODEL_PATH)
     
-    # Initialize TFLite Interpreter
     interpreter = tflite.Interpreter(model_path=MODEL_PATH)
     interpreter.allocate_tensors()
     
@@ -72,7 +68,6 @@ def add_custom_noise_and_missing_thick_grains(image):
     noise = np.random.normal(0, 25, noisy_image.shape)
     noisy_image = np.clip(noisy_image + noise, 0, 255)
 
-    # Thick grains
     for _ in range(2):
         x, y = random.randint(0, 200), random.randint(0, 200)
         w, h = random.randint(20, 50), random.randint(20, 50)
@@ -80,7 +75,6 @@ def add_custom_noise_and_missing_thick_grains(image):
         x, y = random.randint(0, 200), random.randint(0, 200)
         noisy_image[y:y+h, x:x+w] = 0
 
-    # Dots
     for _ in range(random.randint(4, 6)):
         dot_color = 255 if random.random() > 0.5 else 0
         size = 3 if dot_color == 255 else random.randint(4, 6)
@@ -121,7 +115,6 @@ async def predict(file: UploadFile = File(None)):
         original_np = np.array(img).astype(np.float32)[..., np.newaxis] / 255.0
         noisy_np = add_custom_noise_and_missing_thick_grains(original_np)
         
-        # TFLite Inference
         input_data = np.expand_dims(noisy_np, axis=0)
         interpreter.set_tensor(input_details[0]['index'], input_data)
         interpreter.invoke()

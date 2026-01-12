@@ -23,10 +23,9 @@ body {
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  padding: 2rem 1rem; /* Reduced horizontal padding for mobile */
+  padding: 2rem 1rem;
 }
 
-/* Common Section Styling */
 .performance-summary,
 .glass-container,
 .result-card {
@@ -45,10 +44,9 @@ body {
   border-color: rgba(184, 135, 221, 0.5);
 }
 
-/* Project Brief */
 .performance-summary {
   max-width: 900px;
-  width: 100%; /* Occupy full available width up to 900px */
+  width: 100%;
   margin-bottom: 2rem;
   padding: 1.5rem;
   box-sizing: border-box;
@@ -56,9 +54,8 @@ body {
 
 .performance-summary h2,
 header .accent {
-  /* Applied to main header too */
   color: var(--accent);
-  font-size: clamp(1.1rem, 5vw, 1.4rem); /* Responsive font size */
+  font-size: clamp(1.1rem, 5vw, 1.4rem);
   margin: 0 0 1rem 0;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -74,10 +71,9 @@ header p {
   font-size: 0.95rem;
 }
 
-/* Main Interaction Container */
 .glass-container {
   width: 100%;
-  max-width: 550px; /* Better default for desktop */
+  max-width: 550px;
   padding: 1rem 2rem 2rem 2rem;
   text-align: center;
   margin-bottom: 3rem;
@@ -89,7 +85,6 @@ header p {
   text-shadow: 0 0 20px rgba(153, 110, 187, 0.4);
 }
 
-/* Upload & Drop Zone */
 .drop-zone {
   height: 120px;
   width: 100%;
@@ -112,7 +107,6 @@ header p {
   display: none;
 }
 
-/* Buttons */
 .main-btn {
   background: var(--accent);
   color: #000;
@@ -127,10 +121,8 @@ header p {
   transition: 0.3s;
 }
 
-/* Results Grid */
 .results-grid {
   display: grid;
-  /* Automatically wraps cards based on screen width */
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   width: 100%;
@@ -144,7 +136,7 @@ header p {
 
 .img-preview {
   background: rgba(0, 0, 0, 0.4);
-  aspect-ratio: 1 / 1; /* Maintains square shape for fingerprints */
+  aspect-ratio: 1 / 1;
   width: 100%;
   display: flex;
   align-items: center;
@@ -153,9 +145,58 @@ header p {
   overflow: hidden;
 }
 
-/* --- RESPONSIVE MEDIA QUERIES --- */
+.status-badge {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.5s ease;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--glass-border);
+}
 
-/* For Tablets and smaller desktops */
+.status-success {
+  background: rgba(0, 255, 136, 0.05);
+  border-color: var(--success) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+.status-success .score-value {
+  color: var(--success);
+}
+
+.status-error {
+  background: rgba(255, 77, 77, 0.05);
+  border-color: var(--error) !important;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.1);
+}
+
+.status-error .score-value {
+  color: var(--error);
+}
+
+.score-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.7;
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 0 15px currentColor;
+}
+
+.performance-text {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
   body {
     padding: 1rem;
@@ -166,12 +207,11 @@ header p {
   }
 
   .results-grid {
-    grid-template-columns: 1fr; /* Stack vertically on smaller screens */
-    max-width: 450px; /* Keep previews a reasonable size when stacked */
+    grid-template-columns: 1fr;
+    max-width: 450px;
   }
 }
 
-/* For Mobile Phones */
 @media (max-width: 480px) {
   .performance-summary h2,
   header h1 {
@@ -179,7 +219,7 @@ header p {
   }
 
   .main-btn {
-    width: 100%; /* Full width button on mobile */
+    width: 100%;
   }
 
   .drop-zone {
