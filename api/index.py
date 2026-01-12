@@ -12,8 +12,34 @@ from PIL import Image
 import os
 import urllib.request
 import requests # Add this to requirements.txt
+import os
+from pathlib import Path
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+# This defines ROOT_DIR as the directory where index.py lives
+ROOT_DIR = Path(__file__).parent.parent
+
+# Define a global variable for the model
+model = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global model
+    # --- SMART LOADING INSIDE LIFESPAN ---
+    if not os.path.exists(MODEL_PATH):
+        print("Cloud detected: Downloading model from Google Drive...")
+        download_large_file_from_drive(DRIVE_ID, MODEL_PATH)
+    else:
+        print("Localhost detected: Model already exists.")
+    
+    print("Loading model into memory...")
+    model = load_model(MODEL_PATH, compile=False)
+    print("Model loaded successfully!")
+    yield
+    # Clean up (if needed) when app stops
+    del model
+
+app = FastAPI(lifespan=lifespan)
 
 # --- DOWNLOADER THAT BYPASSES VIRUS WARNING ---
 def download_large_file_from_drive(id, destination):
@@ -40,13 +66,6 @@ def download_large_file_from_drive(id, destination):
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(CURRENT_DIR, "fingerprint_unet_final.h5")
 DRIVE_ID = "18bLiNQd-yuTAxPT9bsZtdt2lV3qESCaW"
-
-# --- SMART LOADING ---
-if not os.path.exists(MODEL_PATH):
-    print("Cloud detected: Downloading model from Google Drive...")
-    download_large_file_from_drive(DRIVE_ID, MODEL_PATH)
-else:
-    print("Localhost detected: Model already exists.")
 
 model = load_model(MODEL_PATH, compile=False)
 
