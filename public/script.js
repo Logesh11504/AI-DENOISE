@@ -74,9 +74,28 @@ document.addEventListener("DOMContentLoaded", () => {
         "outputPreview"
       ).innerHTML = `<img src="${data.denoised}">`;
 
-      statusBadge.style.display = "block";
-      statusBadge.innerHTML = `VERIFICATION SCORE: ${data.match_score}`;
-      statusBadge.style.color = data.match_score > 10 ? "#00ff88" : "#ff4d4d";
+      // Inside your processFingerprint function, replace the statusBadge logic:
+      const score = data.match_score;
+      let performanceLabel = "";
+
+      if (score > 25) {
+        performanceLabel = "EXCELLENT RECONSTRUCTION (High Confidence)";
+      } else if (score > 10) {
+        performanceLabel = "SUCCESSFUL RECOVERY (Medium Confidence)";
+      } else {
+        performanceLabel = "RECONSTRUCTION FAILED (Low Feature Match)";
+      }
+
+      statusBadge.innerHTML = `
+    <div style="font-size: 0.8rem; opacity: 0.8;">ORB FEATURE MATCH SCORE</div>
+    <div style="font-size: 1.5rem; font-weight: 600;">${score}</div>
+    <div style="margin-top: 5px; font-weight: bold;">${performanceLabel}</div>
+`;
+      statusBadge.style.background =
+        score > 10 ? "rgba(0, 255, 136, 0.1)" : "rgba(255, 77, 77, 0.1)";
+      statusBadge.style.border = `1px solid ${
+        score > 10 ? "#00ff88" : "#ff4d4d"
+      }`;
     } catch (error) {
       console.error("Process Error:", error);
       if (!isDefault) alert("Error: " + error.message);

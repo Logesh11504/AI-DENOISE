@@ -19,7 +19,7 @@ import tflite_runtime.interpreter as tflite
 ROOT_DIR = Path(__file__).parent.parent
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(CURRENT_DIR, "model.tflite")
-DRIVE_ID = "YOUR_NEW_TFLITE_FILE_ID_HERE" # <--- UPDATE THIS
+DRIVE_ID = "179XRJXXPYi72f2Za8rO74n_mqIkgRCYE" # <--- UPDATE THIS
 
 # Global TFLite variables
 interpreter = None
