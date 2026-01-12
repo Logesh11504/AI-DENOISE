@@ -10,15 +10,44 @@ import base64
 import random
 from PIL import Image
 import os
+import urllib.request
+import requests # Add this to requirements.txt
 
 app = FastAPI()
 
-# Path Configuration
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(CURRENT_DIR)
-MODEL_PATH = os.path.join(CURRENT_DIR, "fingerprint_unet_final.h5")
+# --- DOWNLOADER THAT BYPASSES VIRUS WARNING ---
+def download_large_file_from_drive(id, destination):
+    def get_confirm_token(response):
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                return value
+        return None
 
-# Load Model
+    URL = "https://docs.google.com/uc?export=download"
+    session = requests.Session()
+    response = session.get(URL, params={'id': id}, stream=True)
+    token = get_confirm_token(response)
+
+    if token:
+        params = {'id': id, 'confirm': token}
+        response = session.get(URL, params=params, stream=True)
+
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(32768):
+            if chunk: f.write(chunk)
+
+# --- PATHS ---
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(CURRENT_DIR, "fingerprint_unet_final.h5")
+DRIVE_ID = "18bLiNQd-yuTAxPT9bsZtdt2lV3qESCaW"
+
+# --- SMART LOADING ---
+if not os.path.exists(MODEL_PATH):
+    print("Cloud detected: Downloading model from Google Drive...")
+    download_large_file_from_drive(DRIVE_ID, MODEL_PATH)
+else:
+    print("Localhost detected: Model already exists.")
+
 model = load_model(MODEL_PATH, compile=False)
 
 def add_custom_noise_and_missing_thick_grains(image):
