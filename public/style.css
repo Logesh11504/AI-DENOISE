@@ -1,0 +1,143 @@
+:root {
+  --bg-color: #000000;
+  --card-bg: rgba(255, 255, 255, 0.032);
+  --accent: #996ebb;
+  --success: #00ff88;
+  --error: #ff4d4d;
+  --text: #e0e0e0;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #0e0e19 0%,
+    #010113 100%
+  );
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.glass-container {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2rem;
+  margin-top: 3rem;
+  width: 30%;
+  height: 40%;
+  /* max-width: 900px; */
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.accent {
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent);
+}
+
+.upload-section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Drop Zone Styles */
+.drop-zone {
+  height: 100px;
+  width: 60%;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 1rem 0 2rem 0;
+  transition: 0.3s;
+}
+
+.drop-zone:hover {
+  background: rgba(0, 242, 255, 0.05);
+}
+
+.drop-zone__input {
+  display: none;
+}
+
+/* Buttons */
+.main-btn {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.main-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.main-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px #7338a0;
+}
+
+/* Results Grid */
+.results-grid {
+  display: grid;
+  /* Change from 1fr 1fr to 1fr 1fr 1fr */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.img-preview {
+  background: rgba(0, 0, 0, 0.4);
+  min-height: 250px; /* Force a minimum height */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.img-preview img {
+  max-width: 100%;
+  height: auto;
+  display: block !important; /* Ensure the image isn't hidden */
+}
+
+.result-card {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.img-preview img {
+  width: 100%;
+  height: auto;
+  display: block; /* Prevents tiny gaps at the bottom */
+  border-radius: 8px;
+}
+
+.status-badge {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  display: none;
+}

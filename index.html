@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI DENOISE</title>
+    <link rel="stylesheet" href="/public/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="glass-container">
+      <header>
+        <h1><span class="accent">AI DENOISE</span></h1>
+        <p>Deep Inpainting and Denoising for Fingerprint Enhancement</p>
+      </header>
+
+      <section class="upload-section">
+        <div class="drop-zone" id="dropZone">
+          <span class="drop-zone__prompt"
+            >Drop fingerprint image here or click to upload</span
+          >
+          <input
+            type="file"
+            name="myFile"
+            id="fileInput"
+            class="drop-zone__input"
+            accept="image/*"
+          />
+        </div>
+        <button id="processBtn" class="main-btn" disabled>
+          Initialize Reconstruction
+        </button>
+      </section>
+    </div>
+    <div>
+      <section class="results-grid" id="resultsGrid" style="display: none">
+        <div class="result-card">
+          <h3>Original Fingerprint</h3>
+          <div class="img-preview" id="inputPreview"></div>
+        </div>
+
+        <div class="result-card">
+          <h3>Noisy Fingerprint</h3>
+          <div class="img-preview" id="noisyPreview"></div>
+        </div>
+
+        <div class="result-card">
+          <h3>Denoised Fingerprint</h3>
+          <div class="img-preview" id="outputPreview"></div>
+        </div>
+      </section>
+
+      <div
+        id="statusBadge"
+        class="status-badge"
+        style="text-align: center"
+      ></div>
+    </div>
+
+    <script src="/public/script.js"></script>
+  </body>
+</html>
