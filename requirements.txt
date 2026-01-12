@@ -3,6 +3,7 @@ uvicorn
 requests
 python-multipart
 opencv-python-headless
-numpy<2.0.0
-tensorflow-cpu==2.15.0
+numpy>=1.23.5
+tensorflow-cpu>=2.16.1
+tf-keras>=2.16.0
 pillow

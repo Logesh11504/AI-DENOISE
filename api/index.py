@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 import cv2
 import numpy as np
 import os
+os.environ['TF_USE_LEGACY_KERAS'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # Suppress TF logs
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false' # Not using GPU anyway
 os.environ['OMP_NUM_THREADS'] = '1' # Limit CPU threads to save memory
