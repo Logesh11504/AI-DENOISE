@@ -3,18 +3,23 @@ from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 import cv2
 import numpy as np
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # Suppress TF logs
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false' # Not using GPU anyway
+os.environ['OMP_NUM_THREADS'] = '1' # Limit CPU threads to save memory
+os.environ['TF_NUM_INTRAOP_THREADS'] = '1'
+os.environ['TF_NUM_INTEROP_THREADS'] = '1'
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import io
 import base64
 import random
 from PIL import Image
-import os
 import urllib.request
 import requests # Add this to requirements.txt
-import os
 from pathlib import Path
 from contextlib import asynccontextmanager
+import gc
 
 # This defines ROOT_DIR as the directory where index.py lives
 ROOT_DIR = Path(__file__).parent.parent
@@ -22,22 +27,23 @@ ROOT_DIR = Path(__file__).parent.parent
 # Define a global variable for the model
 model = None
 
+# --- PATHS ---
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(CURRENT_DIR, "fingerprint_unet_final.h5")
+DRIVE_ID = "18bLiNQd-yuTAxPT9bsZtdt2lV3qESCaW"
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global model
-    # --- SMART LOADING INSIDE LIFESPAN ---
     if not os.path.exists(MODEL_PATH):
-        print("Cloud detected: Downloading model from Google Drive...")
         download_large_file_from_drive(DRIVE_ID, MODEL_PATH)
-    else:
-        print("Localhost detected: Model already exists.")
     
-    print("Loading model into memory...")
     model = load_model(MODEL_PATH, compile=False)
-    print("Model loaded successfully!")
+    
+    # Manually trigger garbage collection to free up RAM
+    gc.collect() 
+    print("Model loaded and memory cleared!")
     yield
-    # Clean up (if needed) when app stops
-    del model
 
 app = FastAPI(lifespan=lifespan)
 
@@ -61,13 +67,6 @@ def download_large_file_from_drive(id, destination):
     with open(destination, "wb") as f:
         for chunk in response.iter_content(32768):
             if chunk: f.write(chunk)
-
-# --- PATHS ---
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(CURRENT_DIR, "fingerprint_unet_final.h5")
-DRIVE_ID = "18bLiNQd-yuTAxPT9bsZtdt2lV3qESCaW"
-
-model = load_model(MODEL_PATH, compile=False)
 
 def add_custom_noise_and_missing_thick_grains(image):
     noisy_image = image.copy()
